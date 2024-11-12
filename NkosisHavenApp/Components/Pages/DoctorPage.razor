@@ -1,0 +1,56 @@
+﻿@page "/DoctorPage"
+@using NkosisHavenApp.Models;
+@inject NkosisHavenApp.Data.DoctorDataService _service
+@if (doctors == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!doctors.Any())
+{
+    <p><em>No doctors available.</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Specialty</th>
+                <th>Email</th>
+                <th>PhoneNumber</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in doctors)
+            {
+                <tr>
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.Specialty</td>
+                    <td>@item.Email</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>
+                        <!-- You can add actions like Edit, Delete here -->
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private IEnumerable<Doctor> doctors;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAppointmentAsync();
+    }
+
+    private async Task LoadAppointmentAsync()
+    {
+        doctors = await _service.Get<Doctor>();
+
+    }
+}

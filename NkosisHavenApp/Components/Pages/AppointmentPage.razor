@@ -1,0 +1,59 @@
+﻿@page "/AppointmentPage"
+@using NkosisHavenApp.Models;
+@inject NkosisHavenApp.Data.AppointmentDataService _service
+@if (appointments == null)
+
+{
+    <p><em>Loading...</em></p>
+}
+else if (!appointments.Any())
+{
+    <p><em>No appointments available.</em></p>
+
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Appointment ID</th>
+                <th>Patient ID</th>
+                <th>Doctor ID</th>
+                <th>Appointment Date</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Created Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in appointments)
+            {
+                <tr>
+                    <td>@item.AppointmentId</td>
+                    <td>@item.PatientId</td>
+                    <td>@item.DoctorId</td>
+                    <td>@item.AppointmentDate.ToShortDateString()</td>
+                    <td>@item.AppointmentReason</td>
+                    <td>@item.AppointmentStatus</td>
+                    <td>@item.CreatedDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<Appointment> appointments;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAppointmentAsync();
+    }
+
+    private async Task LoadAppointmentAsync()
+    {
+        appointments = await _service.Get<Appointment>();
+      
+    }
+}

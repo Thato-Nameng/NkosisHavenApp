@@ -1,0 +1,70 @@
+﻿@page "/PatientPage"
+@using NkosisHavenApp.Models;
+@inject NkosisHavenApp.Data.IDataStore _service
+
+@if (patients == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>IDNumber</th>
+                <th>DateOfBirth</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>PhoneNumber</th>
+                <th>PAddress</th>
+                <th>MedicalReason</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in patients)
+            {
+                <tr>
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.IDNumber</td>
+                    <td>@item.DateOfBirth.ToString("yyyy-MM-dd")</td>
+                    <td>@item.Gender</td>
+                    <td>@item.Email</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.PAddress</td>
+                    <td>@item.MedicalReason</td>
+                    <td>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private IEnumerable<Patient> patients;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            patients = await _service.Get<Patient>();
+
+
+            if (patients == null)
+            {
+
+            }
+        }
+        catch (Exception ex)
+        {
+
+
+        }
+    }
+}
